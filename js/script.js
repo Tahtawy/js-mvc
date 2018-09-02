@@ -38,6 +38,10 @@ $(function(){
                     model.currentSelected = $(this).catId;
             });
             catView.render(model.currentSelected);
+        },
+
+        init: function() {
+            listView.render();
         }
     };
     
@@ -51,21 +55,23 @@ $(function(){
                     '</li>';
                 domCatList.append(listItem);
             }
-            $('.list-item').each(function(){
-                $(this).on('click', controller.changeImage($(this).text()));
+            $('.list-item').each(function(index){
+                $(this).on('click', function(){
+                    controller.changeImage($(this).text())
+                });
             });
         }
     };
     
     var catView = {
         render: function(currentSelected) {
-            var catName = $('cat-name'),
+            var catName = $('#cat-name'),
                 catImage = $('#cat-img'),
                 catCounter = $('#cat-counter');
 
-            catName.text('ff');
+            catName.text(model.catList[currentSelected].catName);
         }
     };
 
-    listView.render();
+    controller.init();
 }());
