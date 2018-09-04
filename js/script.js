@@ -33,9 +33,10 @@ $(function(){
     
     var controller = {
         changeImage: function(catName) {
-            $.each(model.catList, function(catName){
-                if ($(this).catName === catName)
-                    model.currentSelected = $(this).catId;
+            $.map(model.catList, function(catObject){
+                if (catObject.catName == catName){
+                    model.currentSelected = catObject.catId;
+                }
             });
             catView.render(model.currentSelected);
         },
