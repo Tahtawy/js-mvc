@@ -40,15 +40,27 @@ $(function(){
         changeImage: function(catName) {
             $.map(model.catList, function(catObject){
                 if (catObject.catName == catName){
-                    model.currentSelected = catObject.catId;
+                    controller.setCurrentSelected(catObject.catId);
                 }
             });
-            catView.render(model.currentSelected);
+            catView.render(controller.getCurrentSeletedCat());
         },
 
         increaseCounter: function() {
             model.catList[model.currentSelected].clickCount++;
             catView.render();
+        },
+
+        getCats: function() {
+            return model.catList;
+        },
+
+        getCurrentSeletedCat: function() {
+            return model.currentSelected;
+        },
+
+        setCurrentSelected: function(currentSelected) {
+            model.currentSelected = currentSelected;
         },
 
         init: function() {
@@ -59,11 +71,12 @@ $(function(){
     
     var listView = {
         render: function() {
-            var domCatList = $("#cat_list");
-            for (var i = 0; i < model.catList.length; i++) {
+            var domCatList = $("#cat_list"),
+                cats = controller.getCats();
+            for (var i = 0; i < cats.length; i++) {
                 var listItem = 
                     '<li class="list-item">' + 
-                        model.catList[i].catName +
+                        cats[i].catName +
                     '</li>';
                 domCatList.append(listItem);
             }
@@ -86,13 +99,14 @@ $(function(){
     var catView = {
         render: function() {
             var catName = $('#cat-name'),
-                catCounter = $('#cat-counter');
+                catCounter = $('#cat-counter'),
+                cats = controller.getCats();
                 this.catImage = $('#cat-img');
-                this.currentSelected = model.currentSelected;
+                this.currentSelected = controller.getCurrentSeletedCat();
 
-            catName.text(model.catList[this.currentSelected].catName);
-            this.catImage.attr('src', model.catList[this.currentSelected].src);
-            catCounter.text(model.catList[this.currentSelected].clickCount);
+            catName.text(cats[this.currentSelected].catName);
+            this.catImage.attr('src', cats[this.currentSelected].src);
+            catCounter.text(cats[this.currentSelected].clickCount);
         },
 
         bindClickEvent: function() {
